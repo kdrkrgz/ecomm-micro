@@ -11,10 +11,10 @@ type Order struct {
 }
 
 type OrderItem struct {
-	Id          int64  `json:"id"`
-	ProductCode string `json:"product_code"`
-	UnitPrice   int64  `json:"unit_price"`
-	Quantity    int64  `json:"quantity"`
+	Id          int64   `json:"id"`
+	ProductCode string  `json:"product_code"`
+	UnitPrice   float32 `json:"unit_price"`
+	Quantity    int32   `json:"quantity"`
 }
 
 func NewOrder(customerId int64, orderItems []OrderItem) Order {
@@ -26,10 +26,10 @@ func NewOrder(customerId int64, orderItems []OrderItem) Order {
 	}
 }
 
-func (order *Order) TotalPrice(orderItems []OrderItem) int64 {
-	var totalPrice int64
+func (order *Order) TotalPrice(orderItems []OrderItem) float32 {
+	var totalPrice float32
 	for _, orderItem := range orderItems {
-		totalPrice += orderItem.UnitPrice * orderItem.Quantity
+		totalPrice += orderItem.UnitPrice * float32(orderItem.Quantity)
 	}
 	return totalPrice
 }

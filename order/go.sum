@@ -35,8 +35,6 @@ github.com/jinzhu/now v1.1.5 h1:/o9tlHleP7gOFmsnYNz3RGnqzefHA47wQpKrrdTIwXQ=
 github.com/jinzhu/now v1.1.5/go.mod h1:d3SSVoowX0Lcu0IBviAWJpolVfI5UJVZZ7cO71lE/z8=
 github.com/kdrkrgz/ecomm-proto/golang/order v0.0.2 h1:ckgdqEhgA7BJsgGB7OXIZqyCdI4nIPh2OuV8oGy0Mmk=
 github.com/kdrkrgz/ecomm-proto/golang/order v0.0.2/go.mod h1:v7ZXVRs6wyC2boppsrAmN8eS1+yVn67EQYrHDgHFXdE=
-github.com/kdrkrgz/ecomm-proto/golang/payment v0.0.1 h1:kH4IH3EFXWTeo7reqm95eIv5gG7RH+KYXo0WbpK93is=
-github.com/kdrkrgz/ecomm-proto/golang/payment v0.0.1/go.mod h1:jXB6UoX2EEqYL0ElX3ylREiJ3/xfkgo9zbI0rS0M4U4=
 github.com/kdrkrgz/ecomm-proto/golang/payment v0.0.2 h1:9qwVZU4iKls/3jeaV+G9ag/aqVfA8Zih1sN1osUOuAc=
 github.com/kdrkrgz/ecomm-proto/golang/payment v0.0.2/go.mod h1:jXB6UoX2EEqYL0ElX3ylREiJ3/xfkgo9zbI0rS0M4U4=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
@@ -75,8 +73,6 @@ go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.15.1 h1:2PunuO5SbkN5MhC
 go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.15.1/go.mod h1:q8+Tha+5LThjeSU8BW93uUC5w5/+DnYHMKBMpRCsui0=
 go.opentelemetry.io/otel/metric v1.22.0 h1:lypMQnGyJYeuYPhOM/bgjbFM6WE44W1/T45er4d8Hhg=
 go.opentelemetry.io/otel/metric v1.22.0/go.mod h1:evJGjVpZv0mQ5QBRJoBF64yMuOf4xCWdXjK8pzFvliY=
-go.opentelemetry.io/otel/sdk v1.21.0 h1:FTt8qirL1EysG6sTQRZ5TokkU8d0ugCj8htOgThZXQ8=
-go.opentelemetry.io/otel/sdk v1.21.0/go.mod h1:Nna6Yv7PWTdgJHVRD9hIYywQBRx7pbox6nwBnZIxl/E=
 go.opentelemetry.io/otel/sdk v1.22.0 h1:6coWHw9xw7EfClIC/+O31R8IY3/+EiRFHevmHafB2Gw=
 go.opentelemetry.io/otel/sdk v1.22.0/go.mod h1:iu7luyVGYovrRpe2fmj3CVKouQNdTOkxtLzPvPz1DOc=
 go.opentelemetry.io/otel/trace v1.22.0 h1:Hg6pPujv0XG9QaVbGOBVHunyuLcCC3jN7WEhPx83XD0=

@@ -87,7 +87,7 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 		logger.Config{
 			SlowThreshold: time.Millisecond * 100,
 			LogLevel:      logger.Info,
-			Colorful:      false,
+			Colorful:      true,
 		},
 	)
 	db, err := gorm.Open(postgres.Open(dataSourceUrl), &gorm.Config{Logger: dbLogger})

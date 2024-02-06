@@ -12,8 +12,8 @@ require (
 	go.opentelemetry.io/otel/sdk v1.22.0
 	go.opentelemetry.io/otel/trace v1.22.0
 	google.golang.org/grpc v1.61.0
-	gorm.io/driver/postgres v1.5.5
-	gorm.io/gorm v1.25.6
+	gorm.io/driver/postgres v1.5.6
+	gorm.io/gorm v1.25.7-0.20240204074919-46816ad31dde
 	gorm.io/plugin/opentelemetry v0.1.4
 )
 

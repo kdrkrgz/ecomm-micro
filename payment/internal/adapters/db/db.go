@@ -62,10 +62,10 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 	)
 	db, err := gorm.Open(postgres.Open(dataSourceUrl), &gorm.Config{Logger: dbLogger})
 	if err != nil {
-		return nil, fmt.Errorf("db conenction failed: %w", err)
+		return nil, fmt.Errorf("db connection failed: %w", err)
 	}
 
-	if err := db.Use(otelgorm.NewPlugin(otelgorm.WithDBName("payment"))); err != nil {
+	if err := db.Use(otelgorm.NewPlugin(otelgorm.WithDBName("payments"))); err != nil {
 		return nil, fmt.Errorf("failed to enable otelgorm: %w", err)
 	}
 	migrationErr := db.AutoMigrate(&Payment{})

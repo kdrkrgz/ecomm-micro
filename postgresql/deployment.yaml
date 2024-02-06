@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+  labels:
+    app: postgresql
+spec:
+  serviceName: postgresql
+  selector:
+    matchLabels:
+      app: postgresql
+    template:
+      metadata:
+        labels:
+          app: postgresql
+      spec:
+        containers:
+          - name: postgresql
+            image: postgres:13.3
+            ports:
+              - containerPort: 5432
+            env:
+              - name: POSTGRES_DB
+                value: ecommdb
+              - name: POSTGRES_USER
+                value: ecommdb_root
+              - name: POSTGRES_PASSWORD
+                value: s3cr3t
+            volumeMounts:
+              - name: postgresql-pv
+                mountPath: /var/lib/postgresql/data
+            livenessProbe:
+                exec:
+                  command: ["pg_isready", "-U", "microservices"]
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                timeoutSeconds: 5
+            readinessProbe:
+                exec:
+                    command: ["pg_isready", "-U", "microservices"]
+                initialDelaySeconds: 5
+                periodSeconds: 10
+                timeoutSeconds: 5
+        volumes:
+          - name: postgresql-pv
+            persistentVolumeClaim:
+              claimName: postgresql-pvc
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-config
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS payments;
+    CREATE DATABASE IF NOT EXISTS orders;
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  labels:
+    app: postgresql
+spec:
+  clusterIP: None
+  ports:
+    - name: '5432'
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+      app: postgresql

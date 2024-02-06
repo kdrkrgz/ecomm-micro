@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta10
+kind: Config
+metadata:
+  name: microservices
+build:
+  artifacts:
+    - image: order
+      context: order
+      docker:
+        dockerfile: Dockerfile
+    - image: payment
+      context: payment
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - order/deployment.yaml
+    - payment/deployment.yaml
+    - postgresql/deployment.yaml
+deploy:
+  kubectl:
+    defaultNamespace: default

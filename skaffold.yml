@@ -1,17 +1,21 @@
 apiVersion: skaffold/v4beta10
 kind: Config
 metadata:
-  name: microservices
+  name: ecomm-micro
 build:
   artifacts:
     - image: order
       context: order
       docker:
         dockerfile: Dockerfile
+        buildArgs:
+          SSH_PRIVATE_KEY: "{{.SSH_PRIVATE_KEY}}"
     - image: payment
       context: payment
       docker:
         dockerfile: Dockerfile
+        buildArgs:
+          SSH_PRIVATE_KEY: "{{.SSH_PRIVATE_KEY}}"
 manifests:
   rawYaml:
     - order/deployment.yaml

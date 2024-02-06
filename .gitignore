@@ -30,3 +30,4 @@ fabric.properties
 .idea/codestream.xml
 .idea/**/azureSettings.xml
 .DS_Store
+skaffold.env

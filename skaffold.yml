@@ -17,10 +17,12 @@ build:
         buildArgs:
           SSH_PRIVATE_KEY: "{{.SSH_PRIVATE_KEY}}"
 manifests:
+  kustomize:
+    paths:
+      - postgresql
   rawYaml:
     - order/deployment.yaml
     - payment/deployment.yaml
-    - postgresql/deployment.yaml
 deploy:
   kubectl:
     defaultNamespace: default

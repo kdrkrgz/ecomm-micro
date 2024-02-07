@@ -32,8 +32,9 @@ spec:
     spec:
       initContainers:
         - name: postgresql-check
-          image: busybox:1.28
-          command: ["sh", "-c", "until pg_isready -h postgresql -p 5432 -U ecommdb_root; do echo waiting for postgresql; sleep 15; done;"]
+          image: postgres:latest
+          command: ["/bin/sh", "-c",
+                    "until pg_isready -h postgres -p 5432 -U ecommdb_root; do echo waiting for postgresql; sleep 15; done;"]
       containers:
         - name: order
           image: order
@@ -42,10 +43,10 @@ spec:
               value: "8080"
             - name: PAYMENT_SERVICE_URL
               value: "payment:8081"
-            - name: env
+            - name: ENV
               value: "prod"
             - name: DATA_SOURCE_URL
-              value: "host=postgresql user=ecommdb_root password=s3cr3t dbname=orders port=5432 sslmode=disable"
+              value: "host=postgres user=ecommdb_root password=s3cr3t dbname=orders port=5432 sslmode=disable"
           ports:
             - containerPort: 8080
 ---

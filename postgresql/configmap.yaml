@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  initdb.sql: |
+   CREATE DATABASE orders;
+   CREATE DATABASE payments;
+
+# TODO: Add if exists condition to initdb, kustomize all

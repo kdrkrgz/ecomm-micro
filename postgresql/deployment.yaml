@@ -15,37 +15,115 @@ spec:
       labels:
         app: postgresql
     spec:
+      initContainers:
+        - name: postgres-init
+          image: postgres:latest
+          command:
+            - bash
+            - "-c"
+            - |
+              set -ex
+              [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+              ordinal=${BASH_REMATCH[1]}
+              if [[ $ordinal -eq 0 ]]; then
+                printf "I am the primary"
+              else
+                printf "I am a read-only replica"
+              fi
       containers:
-         - name: postgresql
-           image: postgres:latest
-           ports:
-             - containerPort: 5432
-           env:
-             - name: POSTGRES_DB
-               value: ecommdb
-             - name: POSTGRES_USER
-               value: ecommdb_root
-             - name: POSTGRES_PASSWORD
-               value: s3cr3t
-           volumeMounts:
-              - name: postgresql-pv
-                mountPath: /var/lib/postgresql/data
-           livenessProbe:
-                exec:
-                  command: ["pg_isready", "-U", "ecommdb_root"]
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                timeoutSeconds: 5
-           readinessProbe:
-                exec:
-                    command: ["pg_isready", "-U", "ecommdb_root"]
-                initialDelaySeconds: 5
-                periodSeconds: 10
-                timeoutSeconds: 5
-      volumes:
-          - name: postgresql-pv
-            persistentVolumeClaim:
-              claimName: postgresql-pvc
+        - name: postgresql
+          image: postgres:latest
+          command: ["sh", "-c", "chown 999:999 /var/lib/postgresql/data"]
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          env:
+            - name: POSTGRES_DB
+              value: ecommdb
+            - name: POSTGRES_USER
+              value: ecommdb_root
+            - name: POSTGRES_PASSWORD
+              value: s3cr3t
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          livenessProbe:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - "pg_isready --host $POD_IP"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - "pg_isready --host $POD_IP"
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: postgres-pv-claim
+              mountPath: /var/lib/postgresql/data
+#      volumes:
+#        - name: task-pv-storage
+#          persistentVolumeClaim:
+#            claimName: postgres-pv-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-pv-claim
+      spec:
+        storageClassName: manual
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 256Mi
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: postgres-pv-claim
+#  labels:
+#    app: postgresql
+#spec:
+#  storageClassName: manual
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 256Mi
+---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: postgres-pv-volume
+#  labels:
+#    type: local
+#spec:
+#  storageClassName: manual
+#  capacity:
+#    storage: 512Mi
+#  accessModes:
+#    - ReadWriteOnce
+#  hostPath:
+#    path: "/mnt/data"
+#  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql-secrets
+  labels:
+    app: postgresql
+type: Opaque
+stringData:
+  POSTGRES_USER: "ecommdb_root"
+  POSTGRES_PASSWORD: "s3cr3t"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -70,4 +148,4 @@ spec:
       protocol: TCP
       targetPort: 5432
   selector:
-      app: postgresql
+    app: postgresql

@@ -6,5 +6,3 @@ data:
   initdb.sql: |
    CREATE DATABASE orders;
    CREATE DATABASE payments;
-
-# TODO: Add if exists condition to initdb, kustomize all

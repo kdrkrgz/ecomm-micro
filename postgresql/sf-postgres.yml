@@ -13,21 +13,21 @@ spec:
       labels:
         app: postgres
     spec:
-      initContainers:
-        - name: postgres-init
-          image: postgres:latest
-          command:
-            - bash
-            - "-c"
-            - |
-              set -ex
-              [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
-              ordinal=${BASH_REMATCH[1]}
-              if [[ $ordinal -eq 0 ]]; then
-                printf "I am the primary"
-              else
-                printf "I am a read-only replica"
-              fi
+#      initContainers:
+#        - name: postgres-init
+#          image: postgres:latest
+#          command:
+#            - bash
+#            - "-c"
+#            - |
+#              set -ex
+#              [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+#              ordinal=${BASH_REMATCH[1]}
+#              if [[ $ordinal -eq 0 ]]; then
+#                printf "I am the primary"
+#              else
+#                printf "I am a read-only replica"
+#              fi
       containers:
         - name: postgres
           image: postgres:latest
@@ -43,7 +43,7 @@ spec:
                   fieldPath: status.podIP
           ports:
             - name: postgres
-              containerPort: 5432
+              containerPort: 5433
           livenessProbe:
             exec:
               command:

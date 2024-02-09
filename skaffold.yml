@@ -25,4 +25,4 @@ manifests:
     - payment/deployment.yaml
 deploy:
   kubectl:
-    defaultNamespace: default
+    defaultNamespace: ecomm-micro

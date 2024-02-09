@@ -10,8 +10,8 @@ spec:
     ports:
       - name: grpc
         protocol: TCP
-        port: 8080
-        targetPort: 8080
+        port: 80
+        targetPort: 80
 
 ---
 apiVersion: apps/v1
@@ -48,20 +48,22 @@ spec:
             - name: DATA_SOURCE_URL
               value: "host=postgres user=ecommdb_root password=s3cr3t dbname=orders port=5432 sslmode=disable"
           ports:
-            - containerPort: 8080
+            - containerPort: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: GRPC
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: selfsigned-issuer
   name: order
+  namespace: ecomm-micro
 spec:
   ingressClassName: nginx
   rules:
-    - http:
+    - host: ingress.local.dev.com
+      http:
         paths:
           - path: /Order
             pathType: Prefix
@@ -69,8 +71,8 @@ spec:
               service:
                 name: order
                 port:
-                  number: 8080
+                  number: 80
   tls:
     - hosts:
-        - ingress.local
+        - ingress.local.dev.com
       secretName: order-tls
